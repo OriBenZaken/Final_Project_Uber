@@ -36,19 +36,12 @@ def main():
 
     print(data_frame.head())
 
-
-
-
-
-
-    print "liz"
-
 def add_is_weekend_col(row):
     return int(row['weekday'] in [6,7,1])
 
 def add_is_holiday_col(row):
     date = row['pickup_datetime'].date()
-    usa_holidays = holidays.UnitedStates()
+    usa_holidays = holidays.US(years=int(row['year']), state='NY')
     return int(date in usa_holidays)
 
 if __name__ == '__main__':
