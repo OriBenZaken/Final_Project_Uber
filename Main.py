@@ -3,18 +3,20 @@ import numpy as np
 pd.set_option('max_columns', 120)
 pd.set_option('max_colwidth', 5000)
 
-# skip row 1 so pandas can parse the data properly.
-df = pd.read_csv('data.csv', low_memory=False)
-print(len(df.columns))
-print(df.columns)
+# read the csv using panda.
+data_frame = pd.read_csv('data.csv', low_memory=False)
 
-half_count = len(df) / 2
-df = df.dropna(thresh=half_count, axis=1) # Drop any column with more than 50% missing values
-print(len(df.columns))
-print(df.columns)
+half_count = len(data_frame) / 2
+data_frame = data_frame.dropna(thresh=half_count, axis=1) # Drop any column with more than 50% missing values
 
-pass
+# drop irrelevant columns
+drop_list = ['store_and_fwd_flag']
+data_frame = data_frame.drop(drop_list,axis=1)
 
+
+
+
+print "liz"
 # import matplotlib.pyplot as plt
 # import seaborn as sns
 # %matplotlib inline
