@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import holidays
 
 def main():
     pd.set_option('max_columns', 120)
@@ -30,6 +31,9 @@ def main():
     data_frame['pickup_datetime'] = pd.to_datetime(data_frame['pickup_datetime'])
     # adding is_weekend feature
     data_frame['is_weekend'] = data_frame.apply(add_is_weekend_col, axis=1)
+    # adding is_holiday feature
+    data_frame['is_holiday'] = data_frame.apply(add_is_holiday_col, axis=1)
+
     print(data_frame.head())
 
 
@@ -41,6 +45,11 @@ def main():
 
 def add_is_weekend_col(row):
     return int(row['weekday'] in [6,7,1])
+
+def add_is_holiday_col(row):
+    date = row['pickup_datetime'].date()
+    usa_holidays = holidays.UnitedStates()
+    return int(date in usa_holidays)
 
 if __name__ == '__main__':
     main()
