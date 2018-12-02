@@ -8,9 +8,9 @@ import utils as ut
 
 
 def yellow_clean(file_name,data_frame):
-    data_frame = ut.clean_null_values(data_frame)
     drop_list = ['store_and_fwd_flag', 'vendor_id']
     data_frame = ut.drop_irrelevant_cols(data_frame,drop_list)
+    data_frame = ut.clean_null_values(data_frame)
     dada_frame = ut.add_fetures(data_frame)
     #special mapping
     data_frame = yellow_mapping(dada_frame)

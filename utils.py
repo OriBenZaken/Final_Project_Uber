@@ -18,7 +18,11 @@ def drop_irrelevant_cols(data_frame,drop_list):
     # drop irrelevant columns
     data_frame = data_frame.drop(drop_list, axis=1)
     return data_frame
-
+def remove_rows_with_zero_fare_amount(data_frame):
+    liz = data_frame.fare_amount
+    data_frame = data_frame[data_frame.fare_amount != 0]
+    #data_frame[str(data_frame['fare_amount'])!=0]
+    return data_frame
 def add_fetures(data_frame):
     # adding cols
     data_frame['pickup_datetime'] = data_frame['pickup_datetime'].apply(pd.Timestamp)
