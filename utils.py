@@ -5,7 +5,7 @@ import sys
 import os
 import utils as ut
 import matplotlib.pyplot as plt
-
+from collections import Counter
 
 
 def clean_null_values(data_frame):
@@ -31,12 +31,16 @@ def add_fetures(data_frame,date_time_col_name):
     data_frame['is_weekend'] = data_frame.apply(add_is_weekend_col, axis=1)
     # adding is_holiday feature
     data_frame['is_holiday'] = data_frame.apply(add_is_holiday_col, axis=1)
+    # adding demand col
+    demand_per_time_interval = Demand_per_time_interval(data_frame, timestamp_col='date_time')
+    data_frame['demand'] = data_frame.apply(demand_per_time_interval.add_demand_col, axis=1)
+    print(data_frame.head())
     return  data_frame
 
 def save_filtered_file(file_name, data_frame):
     # save the data_frame into csv file
     file_name = os.path.splitext(file_name)[0]
-    data_frame.to_csv(file_name + "_filtered.csv", mode='w')
+    data_frame.to_csv(file_name + "_filtered.csv", mode='w',index=False)
 
 def add_is_weekend_col(row):
     return int(row['weekday'] in [6,7,1])
@@ -69,3 +73,30 @@ def drop_irrelevant_cols(data_frame,drop_list):
 def remove_rows_with_zero_fare_amount(data_frame):
     data_frame = data_frame[data_frame.fare_amount != 0]
     return data_frame
+
+class Demand_per_time_interval(object):
+    def __init__(self, data_frame, timestamp_col):
+        self.time_interval_dict = Counter()
+        self.timestamp_col = timestamp_col
+        self.explore_demand_per_time_interval(data_frame)
+
+    def explore_demand_per_time_interval(self, data_frame):
+        for row in data_frame[self.timestamp_col]:
+            start, end = self.map_time_to_time_interval(row.time())
+            self.time_interval_dict[(str(row.date()), start, end)] += 1
+
+    def get_10_minutes_interval(self, minutes):
+        start = int(minutes) // 10 * 10
+        end = start + 9
+        return start, end
+
+    def map_time_to_time_interval(self, time):
+        hour = time.hour
+        start_min, end_min = self.get_10_minutes_interval(time.minute)
+        start, end = str(hour) + ":" + str(start_min), str(hour) + ":" + str(end_min)
+        return start, end
+
+    def add_demand_col(self, row):
+        time = row[self.timestamp_col].time()
+        start, end = self.map_time_to_time_interval(time)
+        return self.time_interval_dict[(str(row[self.timestamp_col].date()), start, end)]
