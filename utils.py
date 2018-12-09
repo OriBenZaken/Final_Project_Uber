@@ -81,7 +81,7 @@ class Demand_per_time_interval(object):
         self.explore_demand_per_time_interval(data_frame)
 
     def explore_demand_per_time_interval(self, data_frame):
-        for row in data_frame:
+        for index, row in data_frame.iterrows():
             timestamp = row[self.timestamp_col]
             start, end = self.map_time_to_time_interval(timestamp.time())
             self.time_interval_dict[(str(row[self.region_col]), str(timestamp.date()), start, end)] += 1

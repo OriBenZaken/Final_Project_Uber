@@ -14,9 +14,9 @@ def main(train_file, train_target_file, test_file, test_target_file):
     test_target_df =  np.loadtxt(test_target_file, delimiter=',')
 
     #regr = tree.DecisionTreeRegressor()
-    #regr = RandomForestRegressor(random_state=0, n_estimators=100)
+    regr = RandomForestRegressor(random_state=0, n_estimators=100)
     #regr = svm.SVR(gamma='scale', C=1.0, epsilon=0.2)
-    regr = linear_model.Lasso(alpha=0.1) # alpha is regularization const,
+    #regr = linear_model.Lasso(alpha=0.1) # alpha is regularization const,
     y_list = []
     y_hat_list = []
     regr = regr.fit(train_df, train_target_df)
