@@ -11,10 +11,13 @@ def main(argv):
     file_name = argv[0]
     data_frame = pd.read_csv(file_name, low_memory=False)
     print data_frame.head()
+
     data_frame = ut.clean_null_values(data_frame)
     dada_frame = ut.add_fetures(data_frame, 'date_time')
     # special mapping
     data_frame = uber_mapping(dada_frame)
+    drop_list = ['date_time']
+    data_frame = ut.drop_irrelevant_cols(data_frame, drop_list)
     ut.plot_correlations(data_frame)
     ut.save_filtered_file(file_name, data_frame)
 
