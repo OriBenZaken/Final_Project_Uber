@@ -3,7 +3,6 @@ import numpy as np
 import holidays
 import sys
 import os
-import utils as ut
 import matplotlib.pyplot as plt
 from collections import Counter
 
@@ -32,7 +31,7 @@ def add_fetures(data_frame,date_time_col_name):
     # adding is_holiday feature
     data_frame['is_holiday'] = data_frame.apply(add_is_holiday_col, axis=1)
     # adding demand col
-    demand_per_time_interval = Demand_per_time_interval(data_frame, timestamp_col='date_time')
+    demand_per_time_interval = Demand_per_time_interval(data_frame, timestamp_col='date_time', region_col='Base')
     data_frame['demand'] = data_frame.apply(demand_per_time_interval.add_demand_col, axis=1)
     print(data_frame.head())
     return  data_frame
@@ -75,15 +74,17 @@ def remove_rows_with_zero_fare_amount(data_frame):
     return data_frame
 
 class Demand_per_time_interval(object):
-    def __init__(self, data_frame, timestamp_col):
+    def __init__(self, data_frame, timestamp_col, region_col):
         self.time_interval_dict = Counter()
         self.timestamp_col = timestamp_col
+        self.region_col = region_col
         self.explore_demand_per_time_interval(data_frame)
 
     def explore_demand_per_time_interval(self, data_frame):
-        for row in data_frame[self.timestamp_col]:
-            start, end = self.map_time_to_time_interval(row.time())
-            self.time_interval_dict[(str(row.date()), start, end)] += 1
+        for row in data_frame:
+            timestamp = row[self.timestamp_col]
+            start, end = self.map_time_to_time_interval(timestamp.time())
+            self.time_interval_dict[(str(row[self.region_col]), str(timestamp.date()), start, end)] += 1
 
     def get_10_minutes_interval(self, minutes):
         start = int(minutes) // 10 * 10
@@ -99,4 +100,5 @@ class Demand_per_time_interval(object):
     def add_demand_col(self, row):
         time = row[self.timestamp_col].time()
         start, end = self.map_time_to_time_interval(time)
-        return self.time_interval_dict[(str(row[self.timestamp_col].date()), start, end)]
+        return self.time_interval_dict[(str(row[self.region_col]),str(row[self.timestamp_col].date()),
+                                                                  start, end)]

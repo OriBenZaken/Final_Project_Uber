@@ -1,10 +1,6 @@
 import sys
-
 import pandas as pd
-
 import utils as ut
-
-
 
 def main(argv):
     # read the csv using panda.
