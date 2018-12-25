@@ -41,6 +41,7 @@ def save_filtered_file(file_name, data_frame, header=True):
     file_name = os.path.splitext(file_name)[0]
     data_frame.to_csv(file_name + "_filtered.csv", mode='w',index=False,header=header)
 
+
 def add_is_weekend_col(row):
     return int(row['weekday'] in [6,7,1])
 
