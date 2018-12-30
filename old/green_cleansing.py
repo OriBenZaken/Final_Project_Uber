@@ -16,4 +16,4 @@ def green_clean(file_name,data_frame):
     #special mapping
     #todo: trip type
     #data_frame = yellow_mapping(dada_frame)
-    ut.save_filtered_file(file_name,data_frame)
+    ut.save_file(file_name, data_frame)

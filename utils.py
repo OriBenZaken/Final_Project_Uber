@@ -36,11 +36,14 @@ def add_fetures(data_frame,date_time_col_name):
     print(data_frame.head())
     return  data_frame
 
-def save_filtered_file(file_name, data_frame, header=True):
+def save_file(file_name, data_frame, header=True):
     # save the data_frame into csv file
     file_name = os.path.splitext(file_name)[0]
-    data_frame.to_csv(file_name + "_filtered.csv", mode='w',index=False,header=header)
+    data_frame.to_csv(file_name + ".csv", mode='w',index=False,header=header)
 
+def create_dir(dir_name):
+    if not os.path.exists(dir_name):
+        os.mkdir(dir_name)
 
 def add_is_weekend_col(row):
     return int(row['weekday'] in [6,7,1])

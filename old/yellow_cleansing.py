@@ -14,7 +14,7 @@ def yellow_clean(file_name,data_frame):
     dada_frame = ut.add_fetures(data_frame)
     #special mapping
     data_frame = yellow_mapping(dada_frame)
-    ut.save_filtered_file(file_name,data_frame)
+    ut.save_file(file_name, data_frame)
 
 def yellow_mapping(data_frame):
     # payment_type mapping
