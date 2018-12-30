@@ -33,7 +33,6 @@ def add_fetures(data_frame,date_time_col_name):
     # adding demand col
     demand_per_time_interval = Demand_per_time_interval(data_frame, timestamp_col='date_time', region_col='Base')
     data_frame['demand'] = data_frame.apply(demand_per_time_interval.add_demand_col, axis=1)
-    print(data_frame.head())
     return  data_frame
 
 def save_file(file_name, data_frame, header=True):

@@ -18,7 +18,7 @@ def main(argv):
         data_frame = uber_mapping(dada_frame)
         drop_list = ['date_time']
         data_frame = ut.drop_irrelevant_cols(data_frame, drop_list)
-        ut.plot_correlations(data_frame)
+        # ut.plot_correlations(data_frame)
         ut.create_dir(target_dir_name)
         ut.save_file(join(target_dir_name, file_name), data_frame)
 
