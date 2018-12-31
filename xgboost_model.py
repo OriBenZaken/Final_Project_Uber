@@ -37,7 +37,8 @@ def main(train_file, train_target_file, test_file, test_target_file):
     print str(mean_absolute_error(y_list,y_hat_list))
 
     pass
-
+def test_with_accuracy(test_df, test_target_df):
+    pass
 
 if __name__ == "__main__":
     if len(sys.argv) != 5:

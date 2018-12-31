@@ -16,7 +16,7 @@ def clean_null_values(data_frame):
     return data_frame
 
 
-def add_fetures(data_frame,date_time_col_name):
+def add_fetures(data_frame, date_time_col_name):
     # adding cols
     data_frame[date_time_col_name] = data_frame[date_time_col_name].apply(pd.Timestamp)
     data_frame['weekday'] = data_frame[date_time_col_name].dt.weekday

@@ -11,6 +11,7 @@ def main(argv):
     target_dir_name = argv[1]
     files_list = [f for f in listdir(source_dir) if isfile(join(source_dir, f))]
     for file_name in files_list:
+        print("Handling file: " + file_name)
         data_frame = pd.read_csv(join(source_dir, file_name), low_memory=False)
         data_frame = ut.clean_null_values(data_frame)
         dada_frame = ut.add_fetures(data_frame, 'date_time')

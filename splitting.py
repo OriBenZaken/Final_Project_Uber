@@ -23,9 +23,9 @@ def main():
     target = data_frame['demand']
     # operate resample to get important rows
     if args.resample != 0:
-        data, target = resample(data, target, n_samples=args.resample, random_state=0)
+        data, target = resample(data, target, n_samples=int(args.resample), random_state=0)
     # split data set into train and test sets
-    data_train, data_test, target_train, target_test = train_test_split(data, target, test_size=0.30, random_state=10)
+    data_train, data_test, target_train, target_test = train_test_split(data, target, test_size=0.20, random_state=10)
     ut.create_dir(args.target_dir)
     ut.save_file(join(args.target_dir, 'train'), data_train, header=False)
     ut.save_file(join(args.target_dir, 'test'), data_test, header=False)
