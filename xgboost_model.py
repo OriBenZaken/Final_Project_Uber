@@ -26,8 +26,8 @@ def main(train_file, train_target_file, test_file, test_target_file):
                                  seed=42)
     model.fit(train_df, train_target_df)
     y_list, y_hat_list = run_test(test_df, test_target_df, model)
-    average_evaluate(y_list, y_hat_list)
-    relative_error_evaluate(y_list,y_hat_list)
+    print("Mean absolute error: {}".format(get_mean_absolute_error(y_list, y_hat_list)))
+    print("Average relative error: {}".format(get_average_relative_error(y_list, y_hat_list)))
 
 def run_test(test_df, test_target_df, model):
     y_list = []
@@ -39,10 +39,10 @@ def run_test(test_df, test_target_df, model):
         print("Real value: {}, Predicted value: {}".format(target, pred))
     return y_list,y_hat_list
 
-def average_evaluate(y_list,y_hat_list):
-    print str(mean_absolute_error(y_list, y_hat_list))
+def get_mean_absolute_error(y_list, y_hat_list):
+    return mean_absolute_error(y_list, y_hat_list)
 
-def relative_error_evaluate(y_list,y_hat_list):
+def get_average_relative_error(y_list, y_hat_list):
     sum = 0
     for y, y_hat in zip(y_list,y_hat_list):
         if (y > y_hat):
@@ -50,8 +50,8 @@ def relative_error_evaluate(y_list,y_hat_list):
         else:
             relative_error = (1 - float(y)/float(y_hat)) * 100
         sum += relative_error
-        print str(relative_error)
-    print "total relative error: " + str(float(sum)/len(y_list))
+    average_relative_error = float(sum)/len(y_list)
+    return average_relative_error
 
 
 
