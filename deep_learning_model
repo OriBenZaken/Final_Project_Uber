@@ -13,11 +13,12 @@ import argparse
 def baseline_model():
 	# create model
 	model = Sequential()
-	model.add(Dense(9, input_dim=9, kernel_initializer='normal', activation='relu'))
+	model.add(Dense(10, input_dim=10, kernel_initializer='normal', activation='relu'))
 	model.add(Dense(1, kernel_initializer='normal'))
 	# Compile model
 	model.compile(loss='mean_squared_error', optimizer='adam')
 	return model
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -32,6 +33,16 @@ def main():
     test_dataset = pd.read_csv(args.test, low_memory=False).values
     test_labels_dataset = pd.read_csv(args.test_target, low_memory=False).values
 
-
+    # fix random seed for reproducibility
+    seed = 7
+    np.random.seed(seed)
+    estimators = []
+    estimators.append(('standardize', StandardScaler()))
+    # evaluate model with standardized dataset
+    estimators.append(('mlp', KerasRegressor(build_fn=baseline_model, epochs=50, batch_size=5, verbose=0)))
+    pipeline = Pipeline(estimators)
+    kfold = KFold(n_splits=10, random_state=seed)
+    results = cross_val_score(pipeline, train_dataset, train_labels_dataset, cv=kfold)
+    print("Results: %.2f (%.2f) MSE" % (results.mean(), results.std()))
 if __name__ == "__main__":
     main()
