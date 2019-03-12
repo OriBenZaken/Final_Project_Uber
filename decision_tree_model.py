@@ -9,7 +9,7 @@ def main(train_file, train_target_file, test_file, test_target_file):
     train_target_df =  np.loadtxt(train_target_file, delimiter=',')
     test_df =  np.loadtxt(test_file, delimiter=',')
     test_target_df =  np.loadtxt(test_target_file, delimiter=',')
-    regr = RandomForestRegressor(random_state=0, n_estimators=500, min_samples_leaf= 5) #best model so far!
+    regr = RandomForestRegressor(random_state=0, n_estimators=1000, min_samples_leaf= 1) #best model so far!
 
     regr = regr.fit(train_df, train_target_df)
     y_list, y_hat_list = run_test(test_df, test_target_df, regr)
