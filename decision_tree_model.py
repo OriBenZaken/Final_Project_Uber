@@ -16,7 +16,6 @@ def main(train_file, train_target_file, test_file, test_target_file):
     print("Mean absolute error: {}".format(get_mean_absolute_error(y_list, y_hat_list)))
     print("Average relative error: {}".format(get_average_relative_error(y_list, y_hat_list)))
 
-
 def save_model(model_name, model):
     dump(model, model_name + '.joblib')
 
