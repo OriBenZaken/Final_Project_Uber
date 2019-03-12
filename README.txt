@@ -11,7 +11,7 @@ On Uber raw data file (csv format) run:
     -> Output: concatenated file
 
 3. python splitting.py <data_file_filtered>
-    -> Optional parameters and falgs:
+    -> Optional parameters and flags:
        -resample=<number of examples> : takes specified number of representative examples
        -target_dir=<target_dir_name> : name of the directory to same the model data. Default
                     name of the directory is "model_data"
