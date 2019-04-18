@@ -1,8 +1,7 @@
 # !/usr/bin/env python
-import threading, logging, time
-import multiprocessing
+import logging
 from sklearn.externals import joblib
-from kafka import KafkaConsumer, KafkaProducer, TopicPartition
+from kafka import KafkaConsumer, TopicPartition
 import numpy as np
 
 
@@ -24,12 +23,13 @@ class Consumer(object):
         while True:
             try:
                 for message in consumer:
-                    predict_row = np.frombuffer(message.value, dtype = np)
-                    print("Got message from producer: {}".format(predict_row))
-                    print (model.predict(predict_row)) #need to to convers
+                    predict_row = np.frombuffer(message.value)
+                    try:
+                        print (model.predict(predict_row.reshape(1, -1)))
+                    except Exception as e:
+                        print("Exception occurred while trying to predict: {}".format(e))
             except Exception as e:
-                print(e)
-                print("Exception occurred, closing consumer...")
+                print("Exception occurred while getting a message from producer: {}".format(e))
                 consumer.close()
 
 def load_model(model_path, testExample=None):
@@ -37,6 +37,7 @@ def load_model(model_path, testExample=None):
         loaded_model = joblib.load(f)
         # if testExample:
         #     test_saved_model(loaded_model, testExample)
+        return loaded_model
 
 def main():
     consumer = Consumer()

@@ -1,8 +1,6 @@
 # !/usr/bin/env python
-import threading, logging, time
-import multiprocessing
-from sklearn.externals import joblib
-from kafka import KafkaConsumer, KafkaProducer
+import logging, time
+from kafka import KafkaProducer
 import numpy as np
 
 class Producer(object):
@@ -19,7 +17,6 @@ class Producer(object):
                 print(e)
                 print("Exception occurred, closing producer...")
                 producer.close()
-
 
         # while True:
         #     try:
