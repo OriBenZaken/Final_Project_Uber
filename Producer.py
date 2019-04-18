@@ -6,27 +6,22 @@ import numpy as np
 class Producer(object):
     def run(self):
         producer = KafkaProducer(bootstrap_servers='localhost:9092')
-
-        test = np.loadtxt("/home/ori/PycharmProjects/csv_cleaning/model_data/test.csv",delimiter = ',')
-        for row in test:
+        while True:
             try:
-                producer.send('my-topic', row.tobytes())
-                time.sleep(1)
+                msg = input("Enter a message for the consumer: ")
+                ride_info = self.get_nparray_ride_info_from_string(msg)
+                producer.send('my-topic', ride_info.tobytes())
                 print("Producer sent messages!")
             except Exception as e:
                 print(e)
                 print("Exception occurred, closing producer...")
                 producer.close()
 
-        # while True:
-        #     try:
-        #         msg = input("Enter a message for the consumer: ")
-        #         producer.send('my-topic', bytes(msg, 'utf-8'))
-        #         print("Producer sent messages!")
-        #     except Exception as e:
-        #         print(e)
-        #         print("Exception occurred, closing producer...")
-        #         producer.close()
+    def get_nparray_ride_info_from_string(self, ride_info_string):
+        ride_info = ride_info_string.split(",")
+        ride_info = [data.strip() for data in ride_info]
+        ride_info = [float(data) for data in ride_info]
+        return np.asarray(ride_info)
 
 def main():
     producer = Producer()
