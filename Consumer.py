@@ -6,7 +6,7 @@ import numpy as np
 from pyspark.sql import SparkSession
 import pandas as pd
 
-# run this script with : /gigaspaces-insightedge-enterprise-14.0.0-ga-b20000/insightedge/spark/bin
+# run this script with : /gigaspaces-insightedge-enterprise-14.0.0-ga-b20000/insightedge/spark/bin/spark-submit
 # need to change the python interpreter of i9e to python 3.5
 
 
