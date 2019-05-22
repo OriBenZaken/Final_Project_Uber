@@ -6,7 +6,8 @@ import numpy as np
 from pyspark.sql import SparkSession
 import pandas as pd
 
-
+# run this script with : /gigaspaces-insightedge-enterprise-14.0.0-ga-b20000/insightedge/spark/bin
+# need to change the python interpreter of i9e to python 3.5
 
 
 class Consumer(object):
@@ -40,7 +41,9 @@ class Consumer(object):
                         print(pred)
                         predict_row = np.append(predict_row, pred)
                         df = convert_np_to_df(spark, predict_row)
-                        df.write.format("org.apache.spark.sql.insightedge").mode("Append").save("model.v1.UberRecord")
+                        #df.write.format("org.apache.spark.sql.insightedge").mode("Append").save("model.v1.UberRecord")
+                        df.write.format("org.apache.spark.sql.insightedge").mode("Append").save("UberTrainData")
+                        print("Succeeded write new entry to the data grid")
                     except Exception as e:
                         print("Exception occurred while trying to predict: {}".format(e))
             except Exception as e:
