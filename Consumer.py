@@ -3,6 +3,10 @@ import logging
 from sklearn.externals import joblib
 from kafka import KafkaConsumer, TopicPartition
 import numpy as np
+from pyspark.sql import SparkSession
+import pandas as pd
+
+
 
 
 class Consumer(object):
@@ -12,25 +16,42 @@ class Consumer(object):
                                  consumer_timeout_ms=1000,
                                  group_id=None,
                                  enable_auto_commit=True)
-        model = load_model('/home/ori/PycharmProjects/csv_cleaning/saved_model/rf_uber_model.pkl')
-        topic = 'my-topic'
+        #model = load_model('/home/ori/PycharmProjects/csv_cleaning/saved_model/rf_uber_model_old.pkl')
+        topic = 'my-topic-2'
+        consumer.topics()
+        # create pyspark.sql.SparkSession
+        spark = SparkSession.builder.getOrCreate()
         partitions = consumer.partitions_for_topic(topic)
-        for p in partitions:
-            assignments = [TopicPartition(topic, p)]
-        consumer.assign(assignments)
-        # start iterate
-        consumer.seek_to_end()
+        if partitions is not None:
+            for p in partitions:
+                assignments = [TopicPartition(topic, p)]
+            consumer.assign(assignments)
+            # start iterate
+            consumer.seek_to_end()
+        else:
+            consumer.subscribe([topic])
         while True:
             try:
                 for message in consumer:
                     predict_row = np.frombuffer(message.value)
                     try:
-                        print (model.predict(predict_row.reshape(1, -1)))
+                        #pred=model.predict(predict_row.reshape(1, -1))
+                        pred=7
+                        print(pred)
+                        predict_row = np.append(predict_row, pred)
+                        df = convert_np_to_df(spark, predict_row)
+                        df.write.format("org.apache.spark.sql.insightedge").mode("Append").save("model.v1.UberRecord")
                     except Exception as e:
                         print("Exception occurred while trying to predict: {}".format(e))
             except Exception as e:
                 print("Exception occurred while getting a message from producer: {}".format(e))
                 consumer.close()
+                break
+
+def convert_np_to_df(spark, np_array):
+    df = [float(x) for x in np_array]
+    return spark.createDataFrame([df])
+
 
 def load_model(model_path, testExample=None):
     with open(model_path, 'rb') as f:
@@ -47,6 +68,6 @@ def main():
 if __name__ == "__main__":
     logging.basicConfig(
         format='%(asctime)s.%(msecs)s:%(name)s:%(thread)d:%(levelname)s:%(process)d:%(message)s',
-        level=logging.INFO
+        level=logging.WARNING
     )
     main()

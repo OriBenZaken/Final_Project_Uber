@@ -10,12 +10,13 @@ class Producer(object):
             try:
                 msg = input("Enter a message for the consumer: ")
                 ride_info = self.get_nparray_ride_info_from_string(msg)
-                producer.send('my-topic', ride_info.tobytes())
+                producer.send('my-topic-2', ride_info.tobytes())
                 print("Producer sent messages!")
             except Exception as e:
                 print(e)
                 print("Exception occurred, closing producer...")
                 producer.close()
+                break
 
     def get_nparray_ride_info_from_string(self, ride_info_string):
         ride_info = ride_info_string.split(",")
@@ -31,6 +32,6 @@ def main():
 if __name__ == "__main__":
     logging.basicConfig(
         format='%(asctime)s.%(msecs)s:%(name)s:%(thread)d:%(levelname)s:%(process)d:%(message)s',
-        level=logging.INFO
+        level=logging.WARNING
     )
     main()
