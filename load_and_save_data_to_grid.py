@@ -1,6 +1,5 @@
 %pyspark
 from pyspark.sql import SparkSession
-from pyspark.sql.types import StructType
 from pyspark.sql.types import *
 
 # create pyspark.sql.SparkSession
