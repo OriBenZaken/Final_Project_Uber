@@ -11,7 +11,7 @@ RUN pip install --user kafka
 RUN pip install --user numpy
 # RUN nohup bash -c "python3 Consumer.py &" && sleep 10
 
-COPY Producer.py .
+COPY src/Producer.py .
 
 ENTRYPOINT ["python3"]
 CMD ["/usr/local/Producer.py"]
