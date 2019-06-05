@@ -1,0 +1,17 @@
+# ::Commands::
+# Build: sudo docker build -t hello-kafka -f Dockerfile_hello_kafka .
+# Run: sudo docker run -it --network=host --name producer hello-kafka:latest
+
+
+FROM python:3.6
+WORKDIR /usr/local/
+EXPOSE 9092
+
+RUN pip install --user kafka
+RUN pip install --user numpy
+# RUN nohup bash -c "python3 Consumer.py &" && sleep 10
+
+COPY Producer.py .
+
+ENTRYPOINT ["python3"]
+CMD ["/usr/local/Producer.py"]
