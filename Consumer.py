@@ -9,11 +9,33 @@ from pyspark.sql import SparkSession
 from pyspark.sql.types import *
 import pandas as pd
 
+
+###############################################
+######### UberRecord Schema Class #############
+###############################################
+
+class UberRecordSchema(object):
+    schema = StructType([StructField('latitude',DoubleType(),True),
+                        StructField('longitude',DoubleType(),True),
+                        StructField('base',IntegerType(),True),
+                        StructField('weekday',IntegerType(),True),
+                        StructField('day',IntegerType(),True),
+                        StructField('month',IntegerType(),True),
+                        StructField('year',IntegerType(),True),
+                        StructField('hour',IntegerType(),True),
+                        StructField('isWeekend',IntegerType(),True),
+                        StructField('isHoliday',IntegerType(),True),
+                        StructField('demand',IntegerType(),True)])
+
 # run this script with : /gigaspaces-insightedge-enterprise-14.0.0-ga-b20000/insightedge/spark/bin/spark-submit
 # need to change the python interpreter of i9e to python 3.5
 
 WAIT_TIME_UNTIL_RETRY_CONNECTION = 10 # In seconds
 UBER_RECORD_TABLE = "model.v1.UberRecord"
+
+###############################################
+########### Kafka Consumer Class ##############
+###############################################
 
 class Consumer(object):
     def run(self):
@@ -85,20 +107,3 @@ if __name__ == "__main__":
         level=logging.CRITICAL
     )
     main()
-
-###############################################
-######### UberRecord Schema Class #############
-###############################################
-
-class UberRecordSchema(object):
-    schema = StructType([StructField('latitude',DoubleType(),True),
-                        StructField('longitude',DoubleType(),True),
-                        StructField('base',IntegerType(),True),
-                        StructField('weekday',IntegerType(),True),
-                        StructField('day',IntegerType(),True),
-                        StructField('month',IntegerType(),True),
-                        StructField('year',IntegerType(),True),
-                        StructField('hour',IntegerType(),True),
-                        StructField('isWeekend',IntegerType(),True),
-                        StructField('isHoliday',IntegerType(),True),
-                        StructField('demand',IntegerType(),True)])
