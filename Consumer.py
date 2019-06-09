@@ -1,6 +1,7 @@
 # !/usr/bin/env python
 import logging
 import time
+from sklearn import externals
 from sklearn.externals import joblib
 from kafka import KafkaConsumer, TopicPartition
 from kafka.errors import NoBrokersAvailable

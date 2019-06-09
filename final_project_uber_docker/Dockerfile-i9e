@@ -15,7 +15,13 @@ RUN echo "tryme" | sudo tee xap-license.txt
 WORKDIR /usr/local/
 COPY src/activate-i9e.sh .
 COPY src/Consumer.py .
-ENTRYPOINT [ "sudo", "./activate-i9e.sh"]
+COPY src/activate-consumer.sh .
+#RUN sudo nohup bash -c "./activate-i9e.sh &" && sleep 30
+RUN sudo pip3 install kafka
+COPY src/i9e-entrypoint.sh .
+ENTRYPOINT [ "./i9e-entrypoint.sh" ]
+
+#ENTRYPOINT ["python3"]
 
 #CMD sudo nohup bash -c "bin/zookeeper-server-start.sh &" && sleep 10
 
