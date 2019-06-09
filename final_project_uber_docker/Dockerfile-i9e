@@ -14,6 +14,7 @@ WORKDIR /usr/local/i9e/gigaspaces-insightedge-enterprise-14.5.0-m7
 RUN echo "tryme" | sudo tee xap-license.txt
 WORKDIR /usr/local/
 COPY src/activate-i9e.sh .
+COPY src/Consumer.py .
 ENTRYPOINT [ "sudo", "./activate-i9e.sh"]
 
 #CMD sudo nohup bash -c "bin/zookeeper-server-start.sh &" && sleep 10

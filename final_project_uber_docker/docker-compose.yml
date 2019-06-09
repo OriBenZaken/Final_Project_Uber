@@ -80,3 +80,16 @@ services:
       - zoo2
       - zoo3
       - kafka1
+  
+  insightedge-consumer:
+    container_name: "consumer"
+    network_mode: host
+    image: i9e
+    ports:
+      - "8099:8099"
+      - "9090:9090"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - kafka-producer
+    
