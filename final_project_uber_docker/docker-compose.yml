@@ -1,8 +1,8 @@
 # Kafka server and ZooKeeper services: credit for https://github.com/simplesteph/kafka-stack-docker-compose/blob/master/zk-multiple-kafka-single.yml
 
 # ::Commands::
-# Config: sudo final_project_uber_docker-compose config
-# Run all services + attach to producer: sudo final_project_uber_docker-compose up -d && sudo final_project_uber_docker attach producer
+# Config: sudo docker-compose config
+# Run all services + attach to producer: sudo docker-compose up -d && sudo docker attach producer
 # Stop all services: sudo docker-compose down
 
 version: '2.1'
