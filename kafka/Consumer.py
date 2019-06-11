@@ -40,6 +40,10 @@ UBER_RECORD_TABLE = "model.v1.UberRecord"
 
 class Consumer(object):
     def run(self):
+        """
+        run function.
+        runs the consumer code. gets queries from producer and uses the traines model in order to predict demand.
+        """
         while True:
             try:
                 print("Kafka Consumer: Trying to establish connection to kafka server...")
@@ -86,18 +90,30 @@ class Consumer(object):
                 time.sleep(WAIT_TIME_UNTIL_RETRY_CONNECTION)
 
 def convert_np_to_df(spark, np_array):
+    """
+    convert numpy to data frame
+    :param spark: spark context
+    :param np_array: numpy array to be converted
+    :return: converted numpy as data frame
+    """
     df = [float(x) for x in np_array]
     return spark.createDataFrame([df], UberRecordSchema.schema)
 
 
-def load_model(model_path, testExample=None):
+def load_model(model_path):
+    """
+    the function loads the model
+    :param model_path: model path
+    :return: the loaded model
+    """
     with open(model_path, 'rb') as f:
         loaded_model = joblib.load(f)
-        # if testExample:
-        #     test_saved_model(loaded_model, testExample)
         return loaded_model
 
 def main():
+    """
+    main function, runs the program.
+    """
     consumer = Consumer()
     consumer.run()
 

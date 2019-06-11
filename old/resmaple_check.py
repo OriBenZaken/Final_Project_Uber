@@ -1,6 +1,8 @@
-from sklearn.utils import resample
 import pandas as pd
-import utils as ut
+from sklearn.utils import resample
+
+from cleansing import utils as ut
+
 data_frame_x = pd.read_csv("train1short.csv", low_memory=False)
 data_frame_y = pd.read_csv("train1_target_short.csv", low_memory=False)
 

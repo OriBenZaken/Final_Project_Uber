@@ -13,6 +13,10 @@ WAIT_TIME_UNTIL_RETRY_CONNECTION = 10 # In seconds
 
 class Producer(object):
     def run(self):
+        """
+        runs the producer code
+        producer sends new queries to kafka queue
+        """
         while True:
             try:
                 print("Kafka Producer: Trying to establish connection to kafka server...")
@@ -34,12 +38,21 @@ class Producer(object):
 
 
     def get_nparray_ride_info_from_string(self, ride_info_string):
+        """
+        split given string
+        :param ride_info_string: input query string
+        :return: numpy array
+        """
         ride_info = ride_info_string.split(",")
         ride_info = [data.strip() for data in ride_info]
         ride_info = [float(data) for data in ride_info]
         return np.asarray(ride_info)
 
 def main():
+    """
+    main function
+    runs the program
+    """
     producer = Producer()
     producer.run()
 

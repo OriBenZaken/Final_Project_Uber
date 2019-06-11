@@ -6,6 +6,11 @@ from os import listdir
 from os.path import isfile, join
 
 def main(argv):
+    """
+    main function, runs the program.
+    cleansing algo in order to remove irrelevant cols and rows.
+    :param argv: command line arguments, need to be: <source_dir> <target_dir>, sea README for more details.
+    """
     # read the csv using panda.
     source_dir = argv[0]
     target_dir_name = argv[1]
@@ -19,7 +24,6 @@ def main(argv):
         data_frame = uber_mapping(dada_frame)
         drop_list = ['date_time']
         data_frame = ut.drop_irrelevant_cols(data_frame, drop_list)
-        # ut.plot_correlations(data_frame)
         ut.create_dir(target_dir_name)
         ut.save_file(join(target_dir_name, file_name), data_frame)
 
@@ -30,10 +34,20 @@ for i,item in enumerate(base_code_list):
     base_code_map[item] = i
 
 def uber_mapping(data_frame):
+    """
+    operate map on df by base - area
+    :param data_frame:
+    :return: mapped df
+    """
     data_frame['Base'] = data_frame.apply(base_code_convert, axis=1)
     return  data_frame
 
 def base_code_convert(row):
+    """
+    convert base to base code
+    :param row:
+    :return: base code
+    """
     val = str(row['Base'])
     return base_code_map[val]
 

@@ -9,6 +9,10 @@ from spark_sklearn import GridSearchCV
 
 
 def main():
+    """
+    main function, runs the program
+    trains spark sklearn model
+    """
     absolute_path = "/data/model_data/"
     train_df = np.loadtxt(absolute_path + "train.csv", delimiter=',')
     train_target_df = np.loadtxt(absolute_path + "target_train.csv", delimiter=',')
@@ -23,7 +27,6 @@ def main():
                               verbose=5,
                               param_grid={})
     regr_rf_cv.fit(train_df, train_target_df)
-    # regr = regr.fit(train_df, train_target_df)
     y_list, y_hat_list = run_test(test_df, test_target_df, regr_rf_cv)
     print("Mean absolute error: {}".format(get_mean_absolute_error(y_list, y_hat_list)))
     print("Average relative error: {}".format(get_average_relative_error(y_list, y_hat_list)))
@@ -32,12 +35,22 @@ def main():
 
 
 def save_model(model, model_name, path):
+    """
+    save the serialized model
+    :param model_name: model name to be saved
+    :param model: model obj
+    """
     with open(path + model_name + ".pkl", 'wb') as f:
         joblib.dump(model, f, compress=1)
         print("Model was saved in: " + path + model_name + ".pkl")
 
 
 def load_model(model_path, testExample=None):
+    """
+    load the serialized model
+    :param model_name: model name to be loaded
+    :return: the deserialized model
+    """
     with open(model_path, 'rb') as f:
         loaded_model = joblib.load(f)
         if testExample:
@@ -45,11 +58,24 @@ def load_model(model_path, testExample=None):
 
 
 def test_saved_model(model, testExample):
+    """
+    test the saved model to predict on given example
+    :param model: deserialized model
+    :param testExample: given example
+    """
     pred = model.predict([testExample[0]])
     print("Testing saved model:: Real value: {}, Predicted value: {}".format(testExample[1], pred))
 
 
 def run_test(test_df, test_target_df, model):
+    """
+    test function
+    operates prediction on test set
+    :param test_df: test data frame
+    :param test_target_df: test target data frame
+    :param model: model pbj
+    :return: real and predicted results
+    """
     y_list = []
     y_hat_list = []
     for example, target in zip(test_df, test_target_df):
@@ -61,10 +87,22 @@ def run_test(test_df, test_target_df, model):
 
 
 def get_mean_absolute_error(y_list, y_hat_list):
+    """
+    calculate mean absolute error
+    :param y_list: real results
+    :param y_hat_list: prediction list
+    :return: mean absolute error
+    """
     return mean_absolute_error(y_list, y_hat_list)
 
 
 def get_average_relative_error(y_list, y_hat_list):
+    """
+    calculate average relative error
+    :param y_list: real results
+    :param y_hat_list: prediction list
+    :return: average relative error
+    """
     sum = 0
     for y, y_hat in zip(y_list, y_hat_list):
         if (y > y_hat):
