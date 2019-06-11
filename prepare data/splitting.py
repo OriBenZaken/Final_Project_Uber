@@ -8,6 +8,10 @@ from os.path import isfile, join
 
 
 def main():
+    """
+    main function, runs the program
+    split the data to test and train sets
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument("data_file", help="Filtered data file")
     parser.add_argument("-resample", help="Number of examples to resample", default=0)
