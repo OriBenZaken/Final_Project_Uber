@@ -70,15 +70,17 @@ class Consumer(object):
                 while True:
                     try:
                         for message in consumer:
-                            predict_row = np.frombuffer(message.value)
+                            str_msg = message.value.decode()
+                            to_predict_row_as_np = get_nparray_ride_info_from_string(str_msg)
                             try:
                                 #pred=model.predict(predict_row.reshape(1, -1))
                                 pred=7
                                 print(pred)
-                                predict_row = np.append(predict_row, pred)
-                                df = convert_np_to_df(spark, predict_row)
+                                to_predict_row_as_np = np.append(to_predict_row_as_np, pred)
+                                newRow = spark.createDataFrame([get_list_from_string(str_msg) + [pred]],  UberRecordSchema.schema)
+                                newRow.write.format("org.apache.spark.sql.insightedge").mode("Append").save(UBER_RECORD_TABLE)
                                 #df.write.format("org.apache.spark.sql.insightedge").mode("Append").save("model.v1.UberRecord")
-                                df.write.format("org.apache.spark.sql.insightedge").mode("Append").save(UBER_RECORD_TABLE)
+                                #df.write.format("org.apache.spark.sql.insightedge").mode("Append").save(UBER_RECORD_TABLE)
                                 print("Kafka Consumer: Succeeded write new entry to the InsightEdge data grid.")
                             except Exception as e:
                                 print("Exception occurred while trying to predict: {}".format(e))
@@ -89,7 +91,7 @@ class Consumer(object):
             except NoBrokersAvailable:
                 time.sleep(WAIT_TIME_UNTIL_RETRY_CONNECTION)
 
-def convert_np_to_df(spark, np_array):
+def convert_string_to_df(spark, np_array):
     """
     convert numpy to data frame
     :param spark: spark context
@@ -99,6 +101,20 @@ def convert_np_to_df(spark, np_array):
     df = [float(x) for x in np_array]
     return spark.createDataFrame([df], UberRecordSchema.schema)
 
+def get_list_from_string(ride_info_string):
+    ride_info = ride_info_string.split(",")
+    ride_info = [data.strip() for data in ride_info]
+    ride_info = [int(data) if i>=2 else float(data) for i,data in enumerate(ride_info)]
+    return  ride_info
+
+def get_nparray_ride_info_from_string(ride_info_string):
+    """
+    split given string
+    :param ride_info_string: input query string
+    :return: numpy array
+    """
+    ride_info = get_list_from_string(ride_info_string)
+    return np.asarray(ride_info)
 
 def load_model(model_path):
     """

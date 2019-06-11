@@ -25,8 +25,8 @@ class Producer(object):
                 while True:
                     try:
                         msg = input("Enter a message for the consumer: ")
-                        ride_info = self.get_nparray_ride_info_from_string(msg)
-                        producer.send('my-topic-2', ride_info.tobytes())
+                        #ride_info = self.get_nparray_ride_info_from_string(msg)
+                        producer.send('my-topic-2', msg.encode())
                         print("Producer sent messages!")
                     except Exception as e:
                         print(e)
@@ -37,16 +37,7 @@ class Producer(object):
                 time.sleep(WAIT_TIME_UNTIL_RETRY_CONNECTION)
 
 
-    def get_nparray_ride_info_from_string(self, ride_info_string):
-        """
-        split given string
-        :param ride_info_string: input query string
-        :return: numpy array
-        """
-        ride_info = ride_info_string.split(",")
-        ride_info = [data.strip() for data in ride_info]
-        ride_info = [float(data) for data in ride_info]
-        return np.asarray(ride_info)
+
 
 def main():
     """

@@ -21,8 +21,8 @@ class Producer(object):
                 while True:
                     try:
                         msg = input("Enter a message for the consumer: ")
-                        ride_info = self.get_nparray_ride_info_from_string(msg)
-                        producer.send('my-topic-2', ride_info.tobytes())
+                        #ride_info = self.get_nparray_ride_info_from_string(msg)
+                        producer.send('my-topic-2', msg)
                         print("Producer sent messages!")
                     except Exception as e:
                         print(e)

@@ -88,7 +88,11 @@ class Consumer(object):
 def convert_np_to_df(spark, np_array):
     df = [float(x) for x in np_array]
     return spark.createDataFrame([df], UberRecordSchema.schema)
-
+   def get_nparray_ride_info_from_string(self, ride_info_string):
+        ride_info = ride_info_string.split(",")
+        ride_info = [data.strip() for data in ride_info]
+        ride_info = [float(data) for data in ride_info]
+        return np.asarray(ride_info)
 
 def load_model(model_path, testExample=None):
     with open(model_path, 'rb') as f:
