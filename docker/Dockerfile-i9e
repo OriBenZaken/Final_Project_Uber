@@ -1,5 +1,6 @@
-# sudo docker build -t i9e -f Dockerfile-i9e .
-# sudo docker run -it --network=host i9e:latest
+# ::Commands::
+# Build: sudo docker build -t i9e -f Dockerfile-i9e .
+# Run: sudo docker run -it --network=host i9e:latest
 
 
 FROM openkbs/jdk-mvn-py3
