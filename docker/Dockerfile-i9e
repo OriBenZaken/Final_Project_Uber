@@ -25,4 +25,3 @@ COPY src/IntializeUberRecordType.SCALA .
 COPY src/copy-zeppelin-notebook.sh .
 COPY src/LoadTrainDataToSpace.py .
 ENTRYPOINT [ "./i9e-entrypoint.sh" ]
-

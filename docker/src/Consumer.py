@@ -53,7 +53,7 @@ class Consumer(object):
                                          group_id=None,
                                          enable_auto_commit=True)
                 print("Kafka Consumer: Succeeded to establishe connection to kafka server.")
-                model = load_model('data/final_model.joblib')
+                model = load_model('/data/final_model.joblib')
                 topic = 'my-topic-2'
                 consumer.topics()
                 # create pyspark.sql.SparkSession
