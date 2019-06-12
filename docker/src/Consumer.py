@@ -52,7 +52,7 @@ class Consumer(object):
                                          consumer_timeout_ms=1000,
                                          group_id=None,
                                          enable_auto_commit=True)
-                print("Kafka Consumer: Succeeded to establishe connection to kafka server.")
+                print("Kafka Consumer: Succeeded to establish connection to kafka server.")
                 model = load_model('/usr/local/final_model.joblib')
                 topic = 'my-topic-2'
                 consumer.topics()
