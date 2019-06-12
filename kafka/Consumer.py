@@ -52,8 +52,8 @@ class Consumer(object):
                                          consumer_timeout_ms=1000,
                                          group_id=None,
                                          enable_auto_commit=True)
-                print("Kafka Consumer: Succeeded to establishe connection to kafka server.")
-                #model = load_model('/home/ori/PycharmProjects/csv_cleaning/saved_model/rf_uber_model_old.pkl')
+                print("Kafka Consumer: Succeeded to establish connection to kafka server.")
+                model = load_model('/usr/local/final_model.joblib')
                 topic = 'my-topic-2'
                 consumer.topics()
                 # create pyspark.sql.SparkSession
@@ -73,14 +73,11 @@ class Consumer(object):
                             str_msg = message.value.decode()
                             to_predict_row_as_np = get_nparray_ride_info_from_string(str_msg)
                             try:
-                                #pred=model.predict(predict_row.reshape(1, -1))
-                                pred=7
-                                print(pred)
-                                to_predict_row_as_np = np.append(to_predict_row_as_np, pred)
+                                pred = model.predict(to_predict_row_as_np.reshape(1, -1))
+                                pred = int(pred.item(0))
+                                print("Model demand prediction for ride info: {} is {}".format(str_msg, pred))
                                 newRow = spark.createDataFrame([get_list_from_string(str_msg) + [pred]],  UberRecordSchema.schema)
                                 newRow.write.format("org.apache.spark.sql.insightedge").mode("Append").save(UBER_RECORD_TABLE)
-                                #df.write.format("org.apache.spark.sql.insightedge").mode("Append").save("model.v1.UberRecord")
-                                #df.write.format("org.apache.spark.sql.insightedge").mode("Append").save(UBER_RECORD_TABLE)
                                 print("Kafka Consumer: Succeeded write new entry to the InsightEdge data grid.")
                             except Exception as e:
                                 print("Exception occurred while trying to predict: {}".format(e))

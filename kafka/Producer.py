@@ -21,10 +21,11 @@ class Producer(object):
             try:
                 print("Kafka Producer: Trying to establish connection to kafka server...")
                 producer = KafkaProducer(bootstrap_servers='localhost:9092')
-                print("Kafka Producer: Succeeded to establishe connection to kafka server.")
+                print("Kafka Producer: Succeeded to establish connection to kafka server.")
                 while True:
                     try:
-                        msg = input("Enter a message for the consumer: ")
+                        msg = input("Enter a new ride info: \n"
+                                    "<longitude, base, weekday, day, month, year, hour, isWeekend, isHoliday>")
                         #ride_info = self.get_nparray_ride_info_from_string(msg)
                         producer.send('my-topic-2', msg.encode())
                         print("Producer sent messages!")
