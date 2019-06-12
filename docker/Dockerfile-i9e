@@ -16,6 +16,7 @@ RUN echo "tryme" | sudo tee xap-license.txt
 WORKDIR /usr/local/
 COPY src/activate-i9e.sh .
 COPY src/Consumer.py .
+COPY src/final_model.joblib .
 COPY src/activate-consumer.sh .
 RUN sudo pip3 install kafka
 COPY src/i9e-entrypoint.sh .
