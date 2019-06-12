@@ -73,7 +73,8 @@ class Consumer(object):
                             str_msg = message.value.decode()
                             to_predict_row_as_np = get_nparray_ride_info_from_string(str_msg)
                             try:
-                                pred=model.predict(to_predict_row_as_np.reshape(1, -1))
+                                pred = model.predict(to_predict_row_as_np.reshape(1, -1))
+                                pred = pred.item(0)
                                 print("Model demand prediction for ride info: {} is {}".format(str_msg, pred))
                                 newRow = spark.createDataFrame([get_list_from_string(str_msg) + [pred]],  UberRecordSchema.schema)
                                 newRow.write.format("org.apache.spark.sql.insightedge").mode("Append").save(UBER_RECORD_TABLE)
