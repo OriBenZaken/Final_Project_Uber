@@ -14,6 +14,8 @@ RUN sudo unzip gigaspaces-insightedge-enterprise-14.5.0-m7.zip
 WORKDIR /usr/local/i9e/gigaspaces-insightedge-enterprise-14.5.0-m7
 RUN echo "tryme" | sudo tee xap-license.txt
 WORKDIR /usr/local/
+COPY src/edit-setenv-overrides.sh .
+RUN ./edit-setenv-overrides.sh
 COPY src/activate-i9e.sh .
 COPY src/Consumer.py .
 COPY src/final_model.joblib .
